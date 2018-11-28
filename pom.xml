@@ -64,7 +64,7 @@
 	<repositories>
 		<repository>
 			<id>saucelabs-repository</id>
-			<url>https://repository-saucelabs.forge.cloudbees.com/release</url>
+			<url>http://192.168.60.6:8081/nexus/content/repositories/junit</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
