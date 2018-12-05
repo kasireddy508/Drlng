@@ -1,80 +1,169 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-Copyright (C) 2012 The Android Open Source Project
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.google.gerrit.plugins</groupId>
-  <artifactId>helloworld</artifactId>
+
+  <groupId>org.example</groupId>
+  <artifactId>jpademo</artifactId>
+  <version>1.0</version>
   <packaging>jar</packaging>
-  <version>0.1</version>
-  <properties>
-    <Gerrit-ApiType>plugin</Gerrit-ApiType>
-    <Gerrit-ApiVersion>2.6-SNAPSHOT</Gerrit-ApiVersion>
-  </properties>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <archive>
-            <manifestEntries>
-              <Gerrit-SshModule>com.google.gerrit.plugins.HelloWorldCommandModule</Gerrit-SshModule>
-              <Implementation-Vendor>Gerrit Code Review</Implementation-Vendor>
-              <Implementation-URL>http://code.google.com/p/gerrit/</Implementation-URL>
-              <Implementation-Title>Plugin ${project.artifactId}</Implementation-Title>
-              <Implementation-Version>${project.version}</Implementation-Version>
-              <Gerrit-ApiType>${Gerrit-ApiType}</Gerrit-ApiType>
-              <Gerrit-ApiVersion>${Gerrit-ApiVersion}</Gerrit-ApiVersion>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-    </plugins>
-    <resources>
-      <resource>
-        <directory>./</directory>
-        <includes>
-          <include>Documentation/**/*</include>
-        </includes>
-      </resource>
-    </resources>
-  </build>
-  <dependencies>
-    <dependency>
-      <groupId>com.google.gerrit</groupId>
-      <artifactId>gerrit-${Gerrit-ApiType}-api</artifactId>
-      <version>${Gerrit-ApiVersion}</version>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
-  <repositories>
+
+  <scm>
+      <connection>scm:git:ssh://my.git.server.internal/home/git/jpademo</connection>
+      <developerConnection>scm:git:ssh://my.git.server.internal/home/git/jpademo</developerConnection>
+  </scm>
+  <ciManagement>
+      <system>jenkins</system>
+      <url>https://my.jenkins.internal/jenkins</url>
+  </ciManagement>
+  
+  
+  <name>jpademo</name>
+  <url>http://maven.apache.org</url>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <id>jar</id>
+                    </execution>
+                </executions>
+                <configuration>
+                      <archive>
+                        <manifestFile>src/main/resources/Manifest.txt</manifestFile>
+                        <manifest>
+                          <addClasspath>true</addClasspath>
+                         
+                          <mainClass>com.footballradar.jpademo.App</mainClass>
+                          
+                        </manifest>
+                      </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.4</version>
+                    <executions>
+                        <execution>
+                                <phase>package</phase>
+                                <goals>
+                                        <goal>shade</goal>
+                                </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                            <finalName>${project.artifactId}-${project.version}</finalName>
+                    </configuration>
+            </plugin>
+            
+        </plugins>
+
+    </build>
+
+    <repositories>
     <repository>
-      <id>gerrit-api-repository</id>
-      <url>https://gerrit-api.commondatastorage.googleapis.com/snapshot/</url>
+      <url>http://download.java.net/maven/2/</url>
+      <id>hibernate-support</id>
+      <layout>default</layout>
+      <name>Repository for library Library[hibernate-support]</name>
     </repository>
   </repositories>
+  
+
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>3.6.3.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate</artifactId>
+      <version>3.2.5.ga</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>3.3.2.GA</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.sql</groupId>
+      <artifactId>jdbc-stdext</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.transaction</groupId>
+      <artifactId>jta</artifactId>
+      <version>1.0.1B</version>
+    </dependency>
+      <dependency>
+          <groupId>org.hibernate</groupId>
+          <artifactId>ejb3-persistence</artifactId>
+          <version>1.0.1.GA</version>
+      </dependency>
+      <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>5.1.14</version>
+      </dependency>
+      <dependency>
+          <artifactId>slf4j-api</artifactId>
+          <groupId>org.slf4j</groupId>
+          <type>jar</type>
+          <version>1.6.1</version>
+      </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>log4j-over-slf4j</artifactId>
+          <version>1.6.1</version>
+      </dependency>
+      <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-simple</artifactId>
+          <version>1.6.1</version>
+      </dependency>
+  </dependencies>
+  
+ <distributionManagement>
+    <repository>
+        <id>My_Artifactory_Releases</id>
+        <name>My_Artifactory-releases</name>
+        <url>http://my.maven.repository.internal/artifactory/release</url>
+    </repository>
+    
+    <snapshotRepository>
+        <id>My_Artifactory_Snapshots</id>
+        <name>My_Artifactory-snapshots</name>
+        <url>http://my.maven.repository.internal/artifactory/snapshot</url>
+    </snapshotRepository>
+
+</distributionManagement>
+
 </project>
